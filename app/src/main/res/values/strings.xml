@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">gitApp</string>
+    <string name="avatar">Avatar</string>
+    <string name="login">TextView</string>
+    <string name="html_url">htmlUrl</string>
+    <string name="no_internet">Sem conexão.</string>
+    <string name="user_name">Pesquisar nome</string>
+    <string name="try_again">Tente novamente.</string>
+    <string name="no_records_found">Dados não encontrados.</string>
+    <string name="no_records_available">Digite o nome de usuário do Github \npara obter detalhes da pesquisa</string>
+    <string name="search_button">pesquisar</string>
+</resources>
