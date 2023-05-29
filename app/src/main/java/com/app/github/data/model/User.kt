@@ -1,6 +1,8 @@
 package com.app.github.data.model
 
-data class User(
+import java.io.Serializable
+
+data class User (
     val avatar_url: String,
     val events_url: String,
     val followers_url: String,
@@ -19,4 +21,4 @@ data class User(
     val subscriptions_url: String,
     val type: String,
     val url: String
-)
+): Serializable

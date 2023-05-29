@@ -1,39 +1,37 @@
 package com.app.github.main.viewmodel
 
-import androidx.lifecycle.*
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.app.github.data.model.ListUser
 import com.app.github.data.model.User
 import com.app.github.data.repository.IUserRepository
-import com.app.github.data.repository.UserRepository
-import com.app.github.utils.Resource
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class UserViewModel(private val userRepository: IUserRepository) : ViewModel() {
 
     var selectedUser: User? = null
-    private val listUsersData = MutableLiveData<List<User>>()
-    private var userData = MutableLiveData<User>()
 
-    private fun getUsers(): MutableLiveData<List<User>> = listUsersData
+    private val _listUser = MutableLiveData<ListUser>()
+    val listUsersData: LiveData<ListUser> = _listUser
+    var userData = MutableLiveData<User>()
+    private val loading = MutableLiveData<Boolean>()
+    fun getUsers(): MutableLiveData<ListUser>  = _listUser
 
-    init {
-        getUsers()
+    fun  onViewReady() {
+        getAllUsers()
     }
 
 
-    fun getAllUsers() = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            emit(Resource.success(data = userRepository.getAllUsers()))
-            listUsersData.postValue(userRepository.getAllUsers())
-        } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Erro ocorrido!"))
+    private fun getAllUsers() {
+        viewModelScope.launch {
+            loading.value = true
+            _listUser.postValue(userRepository.getAllUsers())
+
+            loading.value = false
         }
     }
-
-
-
 }
 
